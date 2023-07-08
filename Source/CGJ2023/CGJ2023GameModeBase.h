@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MulitPlayerManager.h"
+#include "MyCharacter.h"
 #include "GameFramework/GameModeBase.h"
 #include "CGJ2023GameModeBase.generated.h"
 
@@ -32,9 +32,8 @@ public:
 	ACameraActor* MainCamera;
 	virtual void StartPlay() override;
 
-	AMulitPlayerManager* MulitPlayerManagerRef;
-
-
+	TSubclassOf<UUserWidget> WB_PlayerUI;
+	UUserWidget *UW_PlayerUI;
 
 
 	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")

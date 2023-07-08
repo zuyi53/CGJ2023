@@ -4,6 +4,7 @@
 #include "CGJ2023GameModeBase.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 #include "Camera/CameraActor.h"
 
 
@@ -11,6 +12,17 @@
 ACGJ2023GameModeBase::ACGJ2023GameModeBase()
 {
 	DefaultPawnClass = AMyCharacter::StaticClass();
+
+	const TCHAR* pathUI = (TEXT("WidgetBlueprint'/Game/Widget/W_FirstpersonHUD.W_FirstpersonHUD_C'"));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget>Find_WB_PlayerMain(pathUI);
+
+	if (Find_WB_PlayerMain.Succeeded()) {
+		WB_PlayerUI = Find_WB_PlayerMain.Class;
+	}
+	else {
+		UE_LOG(LogTemp, Log, TEXT("Fail to find wb"));
+	}
 
 }
 
@@ -83,4 +95,17 @@ void ACGJ2023GameModeBase::StartPlay()
 	//Set Camera 
 	FViewTargetTransitionParams transitionParams;
 	PlayerControllerRef->SetViewTarget(MainCameraRef, transitionParams);
+
+	
+	// Create PlayerWdiget
+	UW_PlayerUI = CreateWidget<UUserWidget>(PlayerControllerRef, WB_PlayerUI);
+	if (UW_PlayerUI)
+	{
+		UW_PlayerUI->AddToPlayerScreen();
+	}
+	else {
+		UE_LOG(LogTemp, Log, TEXT("Can not find the widget "))
+	}
+	
+
 }
