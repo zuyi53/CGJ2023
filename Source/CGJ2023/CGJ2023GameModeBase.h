@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MyCharacter.h"
+#include "MulitPlayerManager.h"
 #include "GameFramework/GameModeBase.h"
 #include "CGJ2023GameModeBase.generated.h"
 
@@ -21,17 +21,7 @@ public:
 	~ACGJ2023GameModeBase();
 
 public:
-	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
-		APlayerController* PlayerControllerRef; 
 
-	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
-		APlayerController* PlayerController2Ref;
-
-	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
-		APlayerController* PlayerController3Ref;
-
-	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
-		APlayerController* PlayerController4Ref;
 
 	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
 		ACameraActor* MainCameraRef;
@@ -42,10 +32,26 @@ public:
 	ACameraActor* MainCamera;
 	virtual void StartPlay() override;
 
+	AMulitPlayerManager* MulitPlayerManagerRef;
+
+
+
+
+	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
+		APlayerController* PlayerControllerRef;
+
+	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
+		APlayerController* PlayerController2Ref;
+
+	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
+		APlayerController* PlayerController3Ref;
+
+	UPROPERTY(BlueprintReadWrite, Category = "CGJ2023")
+		APlayerController* PlayerController4Ref;
+
 	AMyCharacter* PlayerChararcter_1;
 	AMyCharacter* PlayerChararcter_2;
 	AMyCharacter* PlayerChararcter_3;
 	AMyCharacter* PlayerChararcter_4;
-
 	
 };

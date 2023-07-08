@@ -35,6 +35,10 @@ public:
 	void Player1_Skill();
 	void Player2_Interactive();
 	void Player2_Skill();
+	void Player3_Interactive();
+	void Player3_Skill();
+	void Player4_Interactive();
+	void Player4_Skill();
 
 	void Player1_MoveUp(float axisValue);
 	void Player1_MoveRight(float axisValue);
@@ -45,8 +49,13 @@ public:
 	void Player4_MoveUp(float axisValue);
 	void Player4_MoveRight(float axisValue);
 
+	float speed = 10.f;
 
 
+	AMyCharacter* PlayerChararcter_1;
+	AMyCharacter* PlayerChararcter_2_ref;
+	AMyCharacter* PlayerChararcter_3_ref;
+	AMyCharacter* PlayerChararcter_4_ref;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
