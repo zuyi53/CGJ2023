@@ -10,29 +10,64 @@ AMyCharacter::AMyCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> assetPlane(TEXT("StaticMesh'/Game/Mesh/myplane.myplane'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> assetPlayer1(TEXT("StaticMesh'/Game/Mesh/player1.player1'"));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> assetPlayer2(TEXT("StaticMesh'/Game/Mesh/player2.player2'"));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> assetPlayer3(TEXT("StaticMesh'/Game/Mesh/player3.player3'"));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> assetPlayer4(TEXT("StaticMesh'/Game/Mesh/player4.player4'"));
+
 	CharacterImage = CreateDefaultSubobject<UStaticMeshComponent>("CharacterImage");
 	CharacterImage->SetupAttachment(GetRootComponent());
-	CharacterImage->SetStaticMesh(assetPlane.Object);
+	//EnableInput(GetWorld()->GetFirstPlayerController());
+	SM_Player1 = assetPlayer1.Object;
+	SM_Player2 = assetPlayer2.Object;
+	SM_Player3 = assetPlayer3.Object;
+	SM_Player4 = assetPlayer4.Object;
+
+	CharacterImage->SetStaticMesh(SM_Player1);
 	CharacterImage->SetRelativeRotation({0, 90, 0},false);	
-
-
 }
 
 // Called when the game starts or when spawned
 void AMyCharacter::BeginPlay()
 {
+	
 	Super::BeginPlay();
-	//EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), PlayerIndex));
-	//UE_LOG(LogTemp, Warning, TEXT("This is the Character For Player %d"), PlayerIndex);
 
+	UE_LOG(LogTemp, Warning, TEXT("eginPlay!!!!!!!!!! %d"), PlayerIndex);
 }
 
 // Called every frame
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
+
+void AMyCharacter::switchImage(int32 index)
+{
+	switch (index)
+	{
+	case 1:
+		CharacterImage->SetStaticMesh(SM_Player1);
+		break;
+	case 2:
+		CharacterImage->SetStaticMesh(SM_Player2);
+		break;
+	case 3:
+		CharacterImage->SetStaticMesh(SM_Player3);
+	case 4:
+		CharacterImage->SetStaticMesh(SM_Player4);
+		break;
+	default:
+		CharacterImage->SetStaticMesh(SM_Player1);
+		break;		
+	}
+}
+
+
 
 void AMyCharacter::Player1_Interactive()
 {
@@ -143,26 +178,27 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	
-		InputComponent->BindAxis("Player1_MoveUp", this, &AMyCharacter::Player1_MoveUp);
-		InputComponent->BindAxis("Player1_MoveRight", this, &AMyCharacter::Player1_MoveRight);
-		InputComponent->BindAction("Player1_Interactive", EInputEvent::IE_Pressed,this, &AMyCharacter::Player1_Interactive);
-		InputComponent->BindAction("Player1_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player1_Skill);
+	UE_LOG(LogTemp, Warning, TEXT("INITIAL CHARACTER INPUT "), PlayerIndex);
 
-		InputComponent->BindAxis("Player2_MoveUp", this, &AMyCharacter::Player2_MoveUp);
-		InputComponent->BindAxis("Player2_MoveRight", this, &AMyCharacter::Player2_MoveRight);
-		InputComponent->BindAction("Player2_Interactive", EInputEvent::IE_Pressed, this, &AMyCharacter::Player2_Interactive);
-		InputComponent->BindAction("Player2_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player2_Skill);
+	InputComponent->BindAxis("Player1_MoveUp", this, &AMyCharacter::Player1_MoveUp);
+	InputComponent->BindAxis("Player1_MoveRight", this, &AMyCharacter::Player1_MoveRight);
+	InputComponent->BindAction("Player1_Interactive", EInputEvent::IE_Pressed,this, &AMyCharacter::Player1_Interactive);
+	InputComponent->BindAction("Player1_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player1_Skill);
+
+	InputComponent->BindAxis("Player2_MoveUp", this, &AMyCharacter::Player2_MoveUp);
+	InputComponent->BindAxis("Player2_MoveRight", this, &AMyCharacter::Player2_MoveRight);
+	InputComponent->BindAction("Player2_Interactive", EInputEvent::IE_Pressed, this, & AMyCharacter::Player2_Interactive);
+	InputComponent->BindAction("Player2_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player2_Skill);
 	
-		InputComponent->BindAxis("Player3_MoveUp", this, &AMyCharacter::Player3_MoveUp);
-		InputComponent->BindAxis("Player3_MoveRight", this, &AMyCharacter::Player3_MoveRight);
-		InputComponent->BindAction("Player3_Interactive", EInputEvent::IE_Pressed, this, &AMyCharacter::Player3_Interactive);
-		InputComponent->BindAction("Player3_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player3_Skill);
+	InputComponent->BindAxis("Player3_MoveUp", this, &AMyCharacter::Player3_MoveUp);
+	InputComponent->BindAxis("Player3_MoveRight", this, &AMyCharacter::Player3_MoveRight);
+	InputComponent->BindAction("Player3_Interactive", EInputEvent::IE_Pressed, this, &AMyCharacter::Player3_Interactive);
+	InputComponent->BindAction("Player3_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player3_Skill);
 	
-		InputComponent->BindAxis("Player4_MoveUp", this, &AMyCharacter::Player2_MoveUp);
-		InputComponent->BindAxis("Player4_MoveRight", this, &AMyCharacter::Player2_MoveRight);
-		InputComponent->BindAction("Player4_Interactive", EInputEvent::IE_Pressed, this, &AMyCharacter::Player4_Interactive);
-		InputComponent->BindAction("Player4_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player4_Skill);
+	InputComponent->BindAxis("Player4_MoveUp", this, &AMyCharacter::Player2_MoveUp);
+	InputComponent->BindAxis("Player4_MoveRight", this, &AMyCharacter::Player2_MoveRight);
+	InputComponent->BindAction("Player4_Interactive", EInputEvent::IE_Pressed, this, &AMyCharacter::Player4_Interactive);
+	InputComponent->BindAction("Player4_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player4_Skill);
 }
 
 

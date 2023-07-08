@@ -26,7 +26,7 @@ public:
 	UPROPERTY(VisibleAnywhere , Category= "CGJ2023")
 	UStaticMeshComponent *CharacterImage;
 
-
+	void switchImage(int32 index);
 
 	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
 	int32 PlayerIndex = 0;
@@ -49,13 +49,25 @@ public:
 	void Player4_MoveUp(float axisValue);
 	void Player4_MoveRight(float axisValue);
 
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
 	float speed = 10.f;
 
-
-	AMyCharacter* PlayerChararcter_1;
-	AMyCharacter* PlayerChararcter_2_ref;
-	AMyCharacter* PlayerChararcter_3_ref;
-	AMyCharacter* PlayerChararcter_4_ref;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	UStaticMesh* SM_Player1;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	UStaticMesh* SM_Player2;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	UStaticMesh* SM_Player3;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	UStaticMesh* SM_Player4;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	AMyCharacter* PlayerChararcter_1 = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	AMyCharacter* PlayerChararcter_2_ref = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	AMyCharacter* PlayerChararcter_3_ref = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
+	AMyCharacter* PlayerChararcter_4_ref = nullptr;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

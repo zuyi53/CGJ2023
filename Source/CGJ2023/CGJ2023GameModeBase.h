@@ -52,5 +52,7 @@ public:
 	AMyCharacter* PlayerChararcter_2;
 	AMyCharacter* PlayerChararcter_3;
 	AMyCharacter* PlayerChararcter_4;
+
+	float MaxTime = 120.f;
 	
 };
