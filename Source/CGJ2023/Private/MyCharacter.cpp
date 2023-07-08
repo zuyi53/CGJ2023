@@ -1,5 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "MyCharacter.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/InputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Controller.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -7,8 +11,10 @@
 AMyCharacter::AMyCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 	
+	PrimaryActorTick.bCanEverTick = true;
+	SetActorTickEnabled(true);
+
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> assetPlayer1(TEXT("StaticMesh'/Game/Mesh/player1.player1'"));
 
@@ -25,7 +31,6 @@ AMyCharacter::AMyCharacter()
 	SM_Player2 = assetPlayer2.Object;
 	SM_Player3 = assetPlayer3.Object;
 	SM_Player4 = assetPlayer4.Object;
-
 	CharacterImage->SetStaticMesh(SM_Player1);
 	CharacterImage->SetRelativeRotation({0, 90, 0},false);	
 }
@@ -35,15 +40,16 @@ void AMyCharacter::BeginPlay()
 {
 	
 	Super::BeginPlay();
+	
 
 	UE_LOG(LogTemp, Warning, TEXT("eginPlay!!!!!!!!!! %d"), PlayerIndex);
 }
 
 // Called every frame
-void AMyCharacter::Tick(float DeltaTime)
+void AMyCharacter::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaTime);
-
+	Super::Tick(DeltaSeconds);	
+	UE_LOG(LogTemp, Warning, TEXT("Character is ticking"));
 }
 
 void AMyCharacter::switchImage(int32 index)
@@ -68,7 +74,6 @@ void AMyCharacter::switchImage(int32 index)
 }
 
 
-
 void AMyCharacter::Player1_Interactive()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Player %d interactive button called"), PlayerIndex);
@@ -81,8 +86,10 @@ void AMyCharacter::Player1_Skill()
 
 void AMyCharacter::Player2_Interactive()
 {
-	
-
+	if (bEnablePickup)
+	{
+		
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Player %d interactive button called"), PlayerIndex);
 }
 
@@ -111,18 +118,15 @@ void AMyCharacter::Player4_Skill()
 	UE_LOG(LogTemp, Warning, TEXT("Player %d skill button called"), PlayerIndex);
 }
 
-
-
-
-
 void AMyCharacter::Player1_MoveUp(float axisValue)
 {	
+	//AddMovementInput({ 10 * axisValue,0,0 }, false);
 	AddActorLocalOffset({axisValue * speed, 0,0 }, false, false, ETeleportType::None);
 }
 	
 void AMyCharacter::Player1_MoveRight(float axisValue)
 {
-	AddActorLocalOffset({ 0, axisValue * speed, 0 }, false, false, ETeleportType::None);
+	AddActorLocalOffset({ 0, axisValue * speed, 0 }, false, false, ETeleportType::ResetPhysics);
 }
 
 void AMyCharacter::Player2_MoveUp(float axisValue)
@@ -178,27 +182,28 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	UE_LOG(LogTemp, Warning, TEXT("INITIAL CHARACTER INPUT "), PlayerIndex);
+	//UE_LOG(LogTemp, Warning, TEXT("INITIAL CHARACTER INPUT "), PlayerIndex);
 
 	InputComponent->BindAxis("Player1_MoveUp", this, &AMyCharacter::Player1_MoveUp);
 	InputComponent->BindAxis("Player1_MoveRight", this, &AMyCharacter::Player1_MoveRight);
-	InputComponent->BindAction("Player1_Interactive", EInputEvent::IE_Pressed,this, &AMyCharacter::Player1_Interactive);
-	InputComponent->BindAction("Player1_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player1_Skill);
+	InputComponent->BindAction("Player1_Interactive", IE_Pressed, this, &AMyCharacter::Player1_Interactive);
+	InputComponent->BindAction("Player1_Skill", IE_Pressed, this, &AMyCharacter::Player1_Skill);
 
 	InputComponent->BindAxis("Player2_MoveUp", this, &AMyCharacter::Player2_MoveUp);
 	InputComponent->BindAxis("Player2_MoveRight", this, &AMyCharacter::Player2_MoveRight);
-	InputComponent->BindAction("Player2_Interactive", EInputEvent::IE_Pressed, this, & AMyCharacter::Player2_Interactive);
-	InputComponent->BindAction("Player2_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player2_Skill);
-	
+	InputComponent->BindAction("Player2_Interactive", IE_Pressed, this, &AMyCharacter::Player2_Interactive);
+	InputComponent->BindAction("Player2_Skill", IE_Pressed, this, &AMyCharacter::Player2_Skill);
+
 	InputComponent->BindAxis("Player3_MoveUp", this, &AMyCharacter::Player3_MoveUp);
 	InputComponent->BindAxis("Player3_MoveRight", this, &AMyCharacter::Player3_MoveRight);
-	InputComponent->BindAction("Player3_Interactive", EInputEvent::IE_Pressed, this, &AMyCharacter::Player3_Interactive);
-	InputComponent->BindAction("Player3_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player3_Skill);
-	
+	InputComponent->BindAction("Player3_Interactive", IE_Pressed, this, &AMyCharacter::Player3_Interactive);
+	InputComponent->BindAction("Player3_Skill", IE_Pressed, this, &AMyCharacter::Player3_Skill);
+
 	InputComponent->BindAxis("Player4_MoveUp", this, &AMyCharacter::Player2_MoveUp);
 	InputComponent->BindAxis("Player4_MoveRight", this, &AMyCharacter::Player2_MoveRight);
-	InputComponent->BindAction("Player4_Interactive", EInputEvent::IE_Pressed, this, &AMyCharacter::Player4_Interactive);
-	InputComponent->BindAction("Player4_Skill", EInputEvent::IE_Pressed, this, &AMyCharacter::Player4_Skill);
+	InputComponent->BindAction("Player4_Interactive", IE_Pressed, this, &AMyCharacter::Player4_Interactive);
+	InputComponent->BindAction("Player4_Skill", IE_Pressed, this, &AMyCharacter::Player4_Skill);
+
 }
 
 

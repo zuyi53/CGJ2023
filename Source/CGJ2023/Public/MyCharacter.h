@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "MyCharacter.generated.h"
@@ -21,10 +20,12 @@ public:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(VisibleAnywhere , Category= "CGJ2023")
 	UStaticMeshComponent *CharacterImage;
+
+	UCapsuleComponent* Capsule;
 
 	void switchImage(int32 index);
 
@@ -49,6 +50,8 @@ public:
 	void Player4_MoveUp(float axisValue);
 	void Player4_MoveRight(float axisValue);
 
+	
+
 	UPROPERTY(VisibleAnywhere, Category = "CGJ2023")
 	float speed = 10.f;
 
@@ -71,5 +74,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	bool bEnablePickup = false;
 
 };

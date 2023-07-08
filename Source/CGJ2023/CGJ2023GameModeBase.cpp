@@ -11,9 +11,20 @@
 
 ACGJ2023GameModeBase::ACGJ2023GameModeBase()
 {
-	DefaultPawnClass = AMyCharacter::StaticClass();
+	PrimaryActorTick.bCanEverTick = true;
+	SetActorTickEnabled(true);
+
+
+	static ConstructorHelpers::FClassFinder<AMyCharacter>MyCharacterClass(TEXT("/Game/Character/BP_MyCharacter"));
+
+	if (MyCharacterClass.Class != NULL)
+	{
+		DefaultPawnClass = MyCharacterClass.Class;
+	}
+	
 
 	const TCHAR* pathUI = (TEXT("WidgetBlueprint'/Game/Widget/W_FirstpersonHUD.W_FirstpersonHUD_C'"));
+
 
 	static ConstructorHelpers::FClassFinder<UUserWidget>Find_WB_PlayerMain(pathUI);
 
@@ -29,6 +40,14 @@ ACGJ2023GameModeBase::ACGJ2023GameModeBase()
 ACGJ2023GameModeBase::~ACGJ2023GameModeBase()
 {
 }
+
+void ACGJ2023GameModeBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+
+}
+
 
 void ACGJ2023GameModeBase::StartPlay()
 {
@@ -114,5 +133,24 @@ void ACGJ2023GameModeBase::StartPlay()
 		UE_LOG(LogTemp, Log, TEXT("Can not find the widget "))
 	}
 	
+
+	GetAllRedButtonLocation();
+
+}
+
+void ACGJ2023GameModeBase::GetAllRedButtonLocation()
+{
+	TArray<AActor*> outActor;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARedButton::StaticClass(), outActor);
+
+	for ( AActor* AActor: outActor)
+	{
+		ARedButton* redbutton = Cast<ARedButton>(AActor);
+		if (redbutton != nullptr)
+		{
+			RedButton_List.Add(redbutton);
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("There are %d red button so far!!!!"), RedButton_List.Num());
 
 }
