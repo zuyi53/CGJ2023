@@ -79,7 +79,7 @@ public:
 
         TSharedRef<FInternetAddr> Addr = SocketSubsystem->CreateInternetAddr();
         bool Valid = false;
-        Addr->SetIp(TEXT("192.168.149.151"), Valid);
+        Addr->SetIp(TEXT("192.168.100.16"), Valid);
         if (!Valid)
             return false;
 
